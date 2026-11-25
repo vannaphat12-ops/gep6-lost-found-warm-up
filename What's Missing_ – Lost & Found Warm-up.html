@@ -1,0 +1,359 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's Missing? – Lost &amp; Found Warm-up</title>
+<style>
+  :root{
+    --bg:#fff7e6; --ink:#2b2340; --card:#ffffff; --accent:#7c3aed; --accent2:#f59e0b;
+    --good:#16a34a; --shadow:0 6px 0 rgba(43,35,64,.12);
+    --t1:#ef4444; --t2:#3b82f6; --t3:#22c55e; --t4:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:"Trebuchet MS","Segoe UI",system-ui,"Noto Sans Khmer","Khmer OS",sans-serif;
+    background:var(--bg); color:var(--ink); overflow:hidden; transition:background .4s,color .4s;
+  }
+  body.dark{background:#14102a;color:#f4efff}
+  #wrap{height:100%;display:flex;flex-direction:column;padding:14px 20px 16px;gap:12px}
+  button{font:inherit;cursor:pointer;border:0;border-radius:16px;color:#fff;background:var(--accent);
+    padding:12px 22px;font-weight:700;box-shadow:var(--shadow);transition:transform .08s}
+  button:active{transform:translateY(3px);box-shadow:none}
+  button.ghost{background:#fff;color:var(--ink);border:3px solid rgba(43,35,64,.15)}
+  body.dark button.ghost{background:#2a2250;color:#f4efff;border-color:rgba(255,255,255,.2)}
+  button.big{font-size:clamp(20px,2.6vw,34px);padding:14px 38px;border-radius:22px}
+  button.green{background:var(--good)} button.orange{background:var(--accent2);color:#2b2340}
+
+  /* top bar */
+  #bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .pill{background:#fff;border:3px solid rgba(43,35,64,.12);border-radius:999px;padding:6px 16px;font-weight:700;font-size:18px;color:var(--ink)}
+  .team{display:flex;align-items:center;gap:8px;border-radius:18px;padding:6px 8px 6px 16px;color:#fff;font-weight:800;font-size:clamp(16px,1.8vw,24px);box-shadow:var(--shadow)}
+  .team .sc{background:rgba(255,255,255,.28);border-radius:12px;padding:0 12px;font-size:1.3em;min-width:44px;text-align:center}
+  .team button{padding:2px 10px;border-radius:10px;font-size:1.1em;background:rgba(0,0,0,.22);box-shadow:none}
+  .spacer{flex:1}
+  .tool{padding:6px 14px;font-size:16px;border-radius:12px}
+  .tool.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* stage */
+  #stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+  h1{font-size:clamp(34px,6vw,76px);margin:0;line-height:1.05}
+  h2{font-size:clamp(26px,4vw,52px);margin:0}
+  .sub{font-size:clamp(16px,2vw,26px);opacity:.8;margin:0}
+  .banner{font-size:clamp(24px,3.6vw,48px);font-weight:900}
+  .frame{font-size:clamp(22px,3vw,40px);font-weight:800;background:#fff;color:var(--ink);border-radius:20px;padding:8px 26px;box-shadow:var(--shadow)}
+  .frame b{color:var(--accent);border-bottom:5px dashed var(--accent);padding:0 18px}
+
+  #grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.4vw,18px);width:min(1100px,100%);flex:1;min-height:0;max-height:62vh}
+  .item{background:var(--card);border-radius:24px;box-shadow:var(--shadow);border:4px solid #fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ink);min-height:0;position:relative}
+  .item .emo{font-size:clamp(44px,8.5vh,110px);line-height:1}
+  .item svg{height:clamp(44px,8.5vh,110px);width:auto}
+  .item .en{font-size:clamp(16px,2.8vh,34px);font-weight:900}
+  .item .km{font-size:clamp(13px,2.2vh,26px);opacity:.75}
+  .item.hide-words .en,.item.hide-words .km{visibility:hidden}
+  .item.gap{background:transparent;border:5px dashed var(--accent);box-shadow:none;color:var(--accent);animation:pulse 1.4s infinite}
+  .item.gap .q{font-size:clamp(50px,11vh,130px);font-weight:900}
+  .item.found{border-color:var(--good);animation:pop .7s;box-shadow:0 0 0 8px rgba(22,163,74,.3),var(--shadow)}
+  @keyframes pulse{50%{transform:scale(.97);opacity:.7}}
+  @keyframes pop{0%{transform:scale(.3) rotate(-12deg)}60%{transform:scale(1.15) rotate(4deg)}100%{transform:scale(1)}}
+
+  /* timer */
+  .timer{position:relative;width:clamp(90px,14vh,150px);height:clamp(90px,14vh,150px)}
+  .timer svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .timer .n{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(34px,6vh,64px);font-weight:900}
+  .row{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+  .eyes{font-size:clamp(100px,24vh,260px);line-height:1;animation:float 2.4s infinite ease-in-out}
+  @keyframes float{50%{transform:translateY(-14px)}}
+  .hint{font-size:clamp(18px,2.4vw,30px);opacity:.85}
+
+  /* twist */
+  .twist{background:#fff;color:var(--ink);border-radius:26px;padding:16px 28px;box-shadow:var(--shadow);width:min(1000px,100%);animation:pop .5s}
+  .twist .big{font-size:clamp(24px,3.4vw,46px);font-weight:900;margin-bottom:6px}
+  .places{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .place{background:#f3ecff;border-radius:16px;padding:8px 16px;font-size:clamp(16px,2vw,26px);font-weight:700}
+  .place span{font-size:1.6em;display:block}
+
+  /* setup */
+  .card{background:#fff;color:var(--ink);border-radius:26px;box-shadow:var(--shadow);padding:22px 30px;text-align:left;width:min(760px,100%)}
+  .card h3{margin:0 0 8px}
+  .setrow{display:flex;gap:10px;align-items:center;margin:10px 0;flex-wrap:wrap}
+  .setrow label{font-weight:800;min-width:150px}
+  .seg button{padding:8px 18px;background:#eee;color:var(--ink);box-shadow:none;border-radius:12px;margin-right:6px}
+  .seg button.sel{background:var(--accent);color:#fff}
+  input[type=text]{font:inherit;font-weight:700;border:3px solid #ddd;border-radius:12px;padding:6px 12px;width:200px}
+  #ctrl{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;min-height:64px}
+  .kbd{font-size:13px;opacity:.55;text-align:center}
+  .confetti{position:fixed;top:-20px;font-size:30px;pointer-events:none;animation:fall 3s linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="bar"></div>
+  <div id="stage"></div>
+  <div id="ctrl"></div>
+  <div class="kbd" id="kbd"></div>
+</div>
+
+<script>
+/* ---------- Data ---------- */
+const WALLET_SVG = `<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-label="wallet">
+  <rect x="8" y="14" width="104" height="66" rx="12" fill="#8b5a2b"/>
+  <rect x="8" y="14" width="104" height="22" rx="10" fill="#a8703a"/>
+  <rect x="72" y="40" width="44" height="26" rx="10" fill="#6f4520"/>
+  <circle cx="87" cy="53" r="5" fill="#fcd34d"/>
+  <path d="M16 28h84" stroke="#6f4520" stroke-width="2" stroke-dasharray="5 4" fill="none"/>
+</svg>`;
+const POOL = [
+  {en:'keys',     km:'កូនសោ',        icon:'🔑', plural:true},
+  {en:'wallet',   km:'កាបូបលុយ',     svg:WALLET_SVG},
+  {en:'phone',    km:'ទូរស័ព្ទ',      icon:'📱'},
+  {en:'bag',      km:'កាបូប',        icon:'🎒'},
+  {en:'umbrella', km:'ឆ័ត្រ',         icon:'☂️'},
+  {en:'glasses',  km:'វ៉ែនតា',        icon:'👓', plural:true},
+  {en:'watch',    km:'នាឡិកា',       icon:'⌚'},
+  {en:'book',     km:'សៀវភៅ',       icon:'📖'},
+  {en:'hat',      km:'មួក',          icon:'🧢'},
+  {en:'headphones',km:'កាស',         icon:'🎧', plural:true},
+  {en:'pen',      km:'ប៊ិច',          icon:'🖊️'},
+  {en:'camera',   km:'កាមេរ៉ា',       icon:'📷'},
+];
+const PLACES = [
+  {icon:'🚌', en:'on the bus',      km:'នៅលើឡានក្រុង'},
+  {icon:'🏫', en:'at school',       km:'នៅសាលា'},
+  {icon:'🛒', en:'at the market',   km:'នៅផ្សារ'},
+  {icon:'🏠', en:'at home',         km:'នៅផ្ទះ'},
+  {icon:'🌳', en:'at the park',     km:'នៅសួន'},
+];
+const TEAM_COLORS = ['var(--t1)','var(--t2)','var(--t3)','var(--t4)'];
+const DEFAULT_NAMES = ['Red','Blue','Green','Orange'];
+
+/* ---------- State ---------- */
+const S = {
+  phase:'setup', teamCount:2, names:[...DEFAULT_NAMES], scores:[0,0,0,0],
+  rounds:6, secs:20, round:0, items:[], missing:null, usedMissing:[],
+  showKm:false, showWords:true, twist:false, left:0, timer:null, awarded:false
+};
+const $ = id => document.getElementById(id);
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a };
+const iconHTML = it => it.svg ? it.svg : `<span class="emo">${it.icon}</span>`;
+const verb = it => it.plural ? 'are' : 'is';
+const missingSentence = it => `The ${it.en} ${verb(it)} missing!`;
+
+/* ---------- Audio / speech ---------- */
+let actx;
+function beep(freq=880, dur=.15, type='sine', vol=.2){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.type=type; o.frequency.value=freq; g.gain.value=vol;
+    o.connect(g); g.connect(actx.destination); o.start();
+    g.gain.exponentialRampToValueAtTime(.001, actx.currentTime+dur); o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+function cheer(){ [660,830,990,1320].forEach((f,i)=>setTimeout(()=>beep(f,.18,'triangle',.22),i*110)); confetti(); }
+function say(text){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=.8; speechSynthesis.speak(u); }catch(e){}
+}
+function confetti(){
+  const bits=['🎉','⭐','✨','🎊','🌟'];
+  for(let i=0;i<26;i++){
+    const c=document.createElement('div'); c.className='confetti'; c.textContent=bits[i%bits.length];
+    c.style.left=Math.random()*100+'vw'; c.style.animationDelay=Math.random()*.8+'s'; c.style.fontSize=(22+Math.random()*26)+'px';
+    document.body.appendChild(c); setTimeout(()=>c.remove(),4200);
+  }
+}
+
+/* ---------- Rendering ---------- */
+function renderBar(){
+  const inGame = ['memorize','eyes','guess','reveal'].includes(S.phase);
+  let h='';
+  if(inGame){
+    h+=`<div class="pill">Round ${S.round} / ${S.rounds}</div>`;
+    for(let i=0;i<S.teamCount;i++){
+      h+=`<div class="team" style="background:${TEAM_COLORS[i]}">${esc(S.names[i])}
+        <button onclick="addScore(${i},-1)" title="-1">−</button><span class="sc">${S.scores[i]}</span><button onclick="addScore(${i},1)" title="+1">+</button></div>`;
+    }
+  }
+  h+=`<div class="spacer"></div>`;
+  h+=`<button class="ghost tool ${S.showKm?'on':''}" onclick="toggle('showKm')">ខ្មែរ</button>`;
+  h+=`<button class="ghost tool ${S.showWords?'on':''}" onclick="toggle('showWords')">Aa Words</button>`;
+  h+=`<button class="ghost tool" onclick="toggleFull()">⛶ Full screen</button>`;
+  if(inGame) h+=`<button class="ghost tool" onclick="restart()">↺ Restart</button>`;
+  $('bar').innerHTML=h;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function gridHTML(opts={}){
+  let h='<div id="grid">';
+  S.items.forEach(it=>{
+    const isMissing = it===S.missing;
+    if(isMissing && opts.gap){
+      h+=`<div class="item gap"><div class="q">?</div></div>`; return;
+    }
+    const cls = 'item'+(S.showWords?'':' hide-words')+(isMissing&&opts.found?' found':'');
+    h+=`<div class="${cls}">${iconHTML(it)}<div class="en">${it.en}</div>${S.showKm?`<div class="km">${it.km}</div>`:''}</div>`;
+  });
+  return h+'</div>';
+}
+
+function render(){
+  document.body.classList.toggle('dark', S.phase==='eyes');
+  renderBar();
+  const st=$('stage'), ct=$('ctrl'), kb=$('kbd');
+  if(S.phase==='setup') return renderSetup();
+
+  if(S.phase==='memorize'){
+    st.innerHTML=`<div class="row"><div class="banner">👀 Look! Remember!</div>
+      <div class="timer"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(43,35,64,.12)" stroke-width="10"/>
+      <circle id="ring" cx="50" cy="50" r="44" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg>
+      <div class="n" id="tnum">${S.left}</div></div></div>${gridHTML()}`;
+    ct.innerHTML=`<button class="ghost" onclick="skipTimer()">Done ⏭</button><button class="ghost" onclick="addTime(10)">+10 sec</button>`;
+    kb.textContent='Space = skip timer';
+  }
+  else if(S.phase==='eyes'){
+    st.innerHTML=`<div class="eyes">🙈</div><div class="banner">Close your eyes!</div>
+      <p class="hint">Cover your eyes with your hands. No peeking!</p>
+      <p class="hint" style="opacity:.5;font-size:16px">(Teacher: one item has been removed. Press the button when you are ready.)</p>`;
+    ct.innerHTML=`<button class="big orange" onclick="goGuess()">👀 Open your eyes!</button>`;
+    kb.textContent='Space = open eyes';
+  }
+  else if(S.phase==='guess'){
+    st.innerHTML=`<div class="banner">❓ What's missing?</div>
+      <div class="frame">The <b>&nbsp;</b> ${'is / are'} missing!</div>${gridHTML({gap:true})}`;
+    ct.innerHTML=`<button class="big green" onclick="goReveal()">✅ Show the answer</button>`;
+    kb.textContent='Space = show answer';
+  }
+  else if(S.phase==='reveal'){
+    const m=S.missing, sent=missingSentence(m);
+    let mid = S.twist ? twistHTML() :
+      `<div class="row"><div class="banner">🎉 ${sent}</div><button class="ghost tool" onclick="say('${sent.replace(/'/g,"\\'")}')">🔊</button></div>`;
+    st.innerHTML=mid+gridHTML({found:true});
+    let b=`<span style="align-self:center;font-weight:800">Point to:</span>`;
+    for(let i=0;i<S.teamCount;i++) b+=`<button style="background:${TEAM_COLORS[i]}" onclick="award(${i})">${esc(S.names[i])} +1</button>`;
+    b+=`<button class="orange" onclick="toggleTwist()">${S.twist?'⬅ Back':'🤔 Twist!'}</button>`;
+    b+=`<button class="big" onclick="nextRound()">${S.round>=S.rounds?'🏆 Results':'Next round ➡'}</button>`;
+    ct.innerHTML=b;
+    kb.textContent=`Keys 1–${S.teamCount} = give a point · T = twist · Space = next`;
+  }
+  else if(S.phase==='end') renderEnd();
+}
+
+function twistHTML(){
+  const m=S.missing;
+  let places=PLACES.map(p=>`<div class="place"><span>${p.icon}</span>${p.en}${S.showKm?`<div style="font-size:.7em;opacity:.7">${p.km}</div>`:''}</div>`).join('');
+  return `<div class="twist">
+    <div class="big">🤔 What if you lost your ${m.en} in real life?</div>
+    <div class="frame" style="box-shadow:none;background:#f3ecff">I lost my <b>${m.en}</b>.</div>
+    <div style="font-size:clamp(18px,2.4vw,30px);font-weight:800;margin-top:10px">Where did you lose it?</div>
+    <div style="font-size:clamp(18px,2.4vw,30px);margin-top:4px">I lost it <b style="color:var(--accent)">______</b>.</div>
+    <div class="places">${places}</div>
+  </div>`;
+}
+
+function renderSetup(){
+  document.body.classList.remove('dark');
+  const seg=(key,vals,fmt=v=>v)=>`<div class="seg">${vals.map(v=>`<button class="${S[key]===v?'sel':''}" onclick="setOpt('${key}',${v})">${fmt(v)}</button>`).join('')}</div>`;
+  let names='';
+  for(let i=0;i<S.teamCount;i++) names+=`<div class="setrow"><label style="color:${TEAM_COLORS[i]}">● Team ${i+1}</label><input type="text" value="${esc(S.names[i])}" maxlength="14" oninput="S.names[${i}]=this.value||'Team ${i+1}'"></div>`;
+  $('stage').innerHTML=`
+    <div style="font-size:clamp(60px,12vh,120px)">🔍🎒🔑</div>
+    <h1>What's Missing?</h1>
+    <p class="sub">Warm-up · Lost &amp; Found · Memory Challenge</p>
+    <div class="card">
+      <div class="setrow"><label>Teams</label>${seg('teamCount',[2,3,4])}</div>
+      ${names}
+      <div class="setrow"><label>Rounds</label>${seg('rounds',[4,6,8])}</div>
+      <div class="setrow"><label>Look time</label>${seg('secs',[15,20,30],v=>v+' sec')}</div>
+    </div>`;
+  $('ctrl').innerHTML=`<button class="big green" onclick="startGame()">▶ Start game</button>`;
+  $('kbd').textContent='How to play: Look · Close eyes · One item disappears · What\'s missing?';
+}
+
+function renderEnd(){
+  const max=Math.max(...S.scores.slice(0,S.teamCount));
+  const winners=[...Array(S.teamCount).keys()].filter(i=>S.scores[i]===max);
+  let rows='';
+  for(let i=0;i<S.teamCount;i++) rows+=`<div class="team" style="background:${TEAM_COLORS[i]};font-size:clamp(22px,3vw,40px)">${esc(S.names[i])}<span class="sc">${S.scores[i]}</span>${winners.includes(i)?' 🏆':''}</div>`;
+  $('stage').innerHTML=`<div style="font-size:clamp(80px,18vh,180px)">🏆</div>
+    <h1>${winners.length>1?"It's a tie!":esc(S.names[winners[0]])+' wins!'}</h1>
+    <div class="row">${rows}</div>
+    <p class="sub">Great job! Now open your books: Lost &amp; Found.</p>`;
+  $('ctrl').innerHTML=`<button class="big" onclick="restart()">↺ Play again</button>`;
+  $('kbd').textContent='';
+  cheer();
+}
+
+/* ---------- Actions ---------- */
+function setOpt(k,v){ S[k]=v; renderSetup(); renderBar(); }
+function toggle(k){ S[k]=!S[k]; render(); }
+function toggleFull(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.();
+}
+function startGame(){
+  S.scores=[0,0,0,0]; S.round=0; S.usedMissing=[]; beep(660,.1);
+  startRound();
+}
+function startRound(){
+  clearInterval(S.timer);
+  S.round++;
+  S.items=shuffle(POOL).slice(0,8);
+  const fresh=S.items.filter(i=>!S.usedMissing.includes(i));
+  S.missing=shuffle(fresh.length?fresh:S.items)[0];
+  S.usedMissing.push(S.missing);
+  S.twist=false; S.awarded=false;
+  S.phase='memorize'; S.left=S.secs; S.total=S.secs;
+  render();
+  S.timer=setInterval(tick,1000);
+}
+function tick(){
+  S.left--; updateTimer();
+  if(S.left>0 && S.left<=3) beep(660,.1);
+  if(S.left<=0){ clearInterval(S.timer); beep(988,.4,'square',.15); goEyes(); }
+}
+function updateTimer(){
+  const n=$('tnum'), r=$('ring'); if(!n) return;
+  n.textContent=Math.max(S.left,0);
+  r.style.strokeDashoffset = 276.5*(1-Math.max(S.left,0)/Math.max(S.total,1));
+}
+function addTime(s){ S.left+=s; S.total=Math.max(S.total,S.left); updateTimer(); }
+function skipTimer(){ clearInterval(S.timer); goEyes(); }
+function goEyes(){ S.phase='eyes'; render(); }
+function goGuess(){ S.phase='guess'; beep(520,.12); render(); }
+function goReveal(){ S.phase='reveal'; S.twist=false; render(); beep(784,.2,'triangle'); say(missingSentence(S.missing)); }
+function toggleTwist(){ S.twist=!S.twist; render(); }
+function award(i){ S.scores[i]++; cheer(); renderBar(); }
+function addScore(i,d){ S.scores[i]=Math.max(0,S.scores[i]+d); renderBar(); }
+function nextRound(){
+  try{speechSynthesis.cancel()}catch(e){}
+  if(S.round>=S.rounds){ S.phase='end'; render(); } else startRound();
+}
+function restart(){ clearInterval(S.timer); try{speechSynthesis.cancel()}catch(e){} S.phase='setup'; render(); }
+
+/* ---------- Keyboard ---------- */
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  const k=e.key;
+  if(k===' '||k==='Enter'){
+    e.preventDefault();
+    if(S.phase==='setup') startGame();
+    else if(S.phase==='memorize') skipTimer();
+    else if(S.phase==='eyes') goGuess();
+    else if(S.phase==='guess') goReveal();
+    else if(S.phase==='reveal') nextRound();
+    else if(S.phase==='end') restart();
+  }
+  else if(S.phase==='reveal' && /^[1-4]$/.test(k) && +k<=S.teamCount) award(+k-1);
+  else if(S.phase==='reveal' && (k==='t'||k==='T')) toggleTwist();
+  else if(k==='f'||k==='F') toggleFull();
+});
+
+render();
+</script>
+</body>
+</html>
+
+</body></html>
